@@ -34,10 +34,6 @@ $(function() {
 			if(Clues.get(attrs.id)) {
 				return "Model not unique";
 			}
-		},
-		
-		url: function() {
-			return "/api/teams/"+readCookie('teamCode')+"/clues/" ;
 		}
 	});
 	
@@ -174,7 +170,7 @@ $(function() {
 			var cluePoints   = this.inputPoints.val();
 			
 			Clues.create({
-				//id: clueNumber,
+				id: clueNumber,
 				number: clueNumber,
 				hint: clueHint,
 				answer: clueAnswer,
