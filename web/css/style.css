@@ -122,15 +122,10 @@ body, input {
 		}
 		#clues tr .hint, #clues tr .answer {
 			width: 280px;
-			/*max-width: 300px;*/
 		}
 		#clues tr .points {
 			width: 50px;
 		}
-		#clues tr .location {
-			/*width: 160px;*/
-		}
-
 
 			#clues .clue .location, #clues .clue .photos {
 				font-size: 12px;
@@ -138,7 +133,6 @@ body, input {
 			#clues .clue .photos .none {
 				color: #999;
 			}
-		
 
 		#clues .clue .edit a, #clues .clue .delete a {
 			visibility: hidden;

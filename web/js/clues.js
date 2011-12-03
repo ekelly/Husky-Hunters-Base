@@ -1,4 +1,17 @@
 $(function() {
+	window.Router = Backbone.Router.extend({
+		routes: {
+			"":     "list",
+			"home": "list",
+			"list": "list",
+			"map":  "map"
+		},
+		list: function() {},
+		map: function() {}
+	});
+	window.router = new Router;
+	Backbone.history.start();
+	
 	window.Clue = Backbone.Model.extend({
 		validate: function(attrs) {
 			var allEmpty = _.all(attrs, function(attr) {
@@ -101,9 +114,7 @@ $(function() {
 		}
 	});
 	
-	
-	window.AppView = Backbone.View.extend({
-		
+	window.CluePage = Backbone.View.extend({
 		el: $('#clues'),
 		
 		events: {
@@ -118,14 +129,11 @@ $(function() {
 			this.inputHint = $('#clue-hint');
 			this.inputAnswer = $('#clue-answer');
 			this.inputPoints = $('#clue-points');
-			//this.inputLocation = $('#clue-location');
 			
 			Clues.bind('add',   this.addOne, this);
 			Clues.bind('reset', this.addAll, this);
 			
 			$('#add-clue').click(this.edit);
-			
-			//this.edit();
 			
 			Clues.fetch();
 		},
@@ -168,6 +176,44 @@ $(function() {
 			if(!e || e.target.tagName != 'INPUT') {
 				this.inputId.focus();
 			}
+		}
+	});
+	
+	window.AppView = Backbone.View.extend({
+		el: $('#app'),
+		
+		initialize: function() {
+			_.bindAll(this, 'swapToList', 'swapToMap');
+			
+			router.bind("route:list", this.swapToList);
+			router.bind("route:map",  this.swapToMap);
+			
+			var mapLink = $("<a>Map</a>");
+			mapLink.click(function() {
+				router.navigate("map", true);
+			});
+
+			var listLink = $("<a>List</a>");
+			listLink.click(function() {
+				router.navigate("list", true);
+			});
+
+			$('#nav').append(mapLink);
+			$('#nav').append(listLink);
+			
+			var clues = new CluePage;
+		},
+		
+		swapToList: function() {
+			console.log("swapToList");
+			$('#map').hide();
+			$('#clues').show();
+		},
+		
+		swapToMap: function() {
+			console.log("swapToMap");
+			$('#clues').hide();
+			$('#map').show();
 		}
 	});
 	
