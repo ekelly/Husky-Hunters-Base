@@ -57,10 +57,9 @@ class CluesHandler(BaseHandler):
 
   @valid_team
   def post(self, team):
-    clues = json.loads(self.request.body)
-    args = reduce(lambda x, y: x + y, ([team, clue["clue_number"], encode_clue(clue)] for clue in clues))
-    self.db.execute("insert into clues (team, clue_number, body) values " +
-                    ", ".join("(%s, %s, %s)" for clue in clues), *args)
+    clue = json.loads(self.request.body)
+    self.db.execute("insert into clues (team, clue_number, body) values (%s, %s, %s)",
+                    team, clue["clue_number"], encode_clue(clue))
     self.db.close()
 
 class ClueHandler(BaseHandler):
