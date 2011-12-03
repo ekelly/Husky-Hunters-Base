@@ -23,7 +23,7 @@ $(function() {
 		},
 		
 		url: function() {
-			return "/api/teams/"+readCookie('teamCode')+"/clues/"+this.get("id")+"/";
+			return "/api/teams/"+readCookie('teamCode')+"/clues/";
 		}
 	});
 	
