@@ -1,5 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
    	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 		<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
@@ -16,6 +16,9 @@
 	</head>
 	
 	<body>
+	<div id="overlay">
+		<div id="overlay-content"></div>
+	</div>
 	
 	<div id="content">
 		<div id="header">
@@ -80,12 +83,21 @@
 			<span class="display"><%= points %></span>
 			<input class="editing" type="text" value="<%= points %>" />
 		</td>
-		<td class="location"><a href="#map">Add to map</a></td>
+		<td class="location">
+			<a href="#map/<%= number %>">
+			<% if (latlng.length===2) { %> See on map <% } else { %> Add to map <% } %>
+			</a>
+		</td>
 		<td class="photos"><span class="none">None</span></td>
 		
 		<td class="delete"><a></a></td>
 	</script>
-	<script src="/js/clues.js"></script>
+
+
+	<script type="text/javascript"	
+	src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCxJVf7hEuR6AB0O52ugqk5dE9A5nFmuYA&sensor=true"></script>
+	
+    <script src="/js/clues.js"></script>
 
 	</body>
 </html>

@@ -2,25 +2,30 @@ $(function() {
 	window.Router = Backbone.Router.extend({
 		routes: {
 			"":     "list",
-			"home": "list",
 			"list": "list",
-			"map":  "map"
+			//"map":  "map",
+			"map/:clue": "map"
 		},
-		list: function() {},
-		map: function() {}
+		list: function(){},
+		map: function(){}
 	});
 	window.router = new Router;
-	Backbone.history.start();
 	
 	window.Clue = Backbone.Model.extend({
 		validate: function(attrs) {
-			var allEmpty = _.all(attrs, function(attr) {
-								return attr.length === 0;
-							});
+			//console.log(attrs);
+			
+// 			var allEmpty = _.all(attrs, function(attr) {
+// 								return attr.length === 0;
+// 							});
 			
 			// check if there are any empty attributes
-			if(allEmpty || attrs.number.length === 0) {
+			if(attrs.number && attrs.number.length === 0) {
 				return "Can't leave that empty";
+			}
+			
+			if(Clues.get(attrs.id)) {
+				return "Model not unique";
 			}
 		}
 	});
@@ -158,10 +163,12 @@ $(function() {
 			//var clueLocation = this.inputLocation.val();
 			
 			Clues.create({
+				id: clueNumber,
 				number: clueNumber,
 				hint: clueHint,
 				answer: clueAnswer,
-				points: cluePoints//,
+				points: cluePoints,
+				latlng: []//,
 				//location: clueLocation
 			});
 			
@@ -179,6 +186,83 @@ $(function() {
 		}
 	});
 	
+	window.MapPage = Backbone.View.extend({
+		el: $('#map'),
+		
+		events: {
+			"keypress #map-search": "search"
+		},
+		
+		initialize: function() {
+			_.bindAll(this, 'search', 'showSearchResults');
+			
+			this.input = $("<input type='text' id='map-search' placeholder='Search for a location' />");
+			
+			this.mapEl = $("<div id='map-canvas'></div>");
+			
+			$(this.el).append(this.input);
+			$(this.el).append(this.mapEl);
+			
+			//console.log(this.model);
+			
+			this.render();
+		},
+		
+		render: function() {
+			var latlng = new google.maps.LatLng(42.3400571, -71.0875355);
+
+			if(this.model) {
+				var coords = this.model.get("latlng");
+				if(coords && coords.length === 2) {
+					latlng = new google.maps.LatLng(coords[0], coords[1]);
+				}
+			}
+			
+			var options = {
+				zoom: 15,
+				center: latlng,
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			};
+			
+			this.map = new google.maps.Map(this.mapEl[0], options);
+		},
+		
+		search: function(e) {
+			if(e.keyCode != 13) return;
+			
+			
+			var address = this.input.val();
+			
+			var geocoder = new google.maps.Geocoder();
+			
+			geocoder.geocode( { 'address': address }, this.showSearchResults);
+		},
+		
+		showSearchResults: function(results, status) {
+			//console.log(results, status);
+			
+			if (status == google.maps.GeocoderStatus.OK) {
+				this.map.setCenter(results[0].geometry.location);
+				var marker = new google.maps.Marker({
+					map: this.map,
+					position: results[0].geometry.location
+				});
+				
+				var latlng = [results[0].geometry.location.lat(),
+								results[0].geometry.location.lng()];
+				
+				this.model.save({ latlng: latlng });
+			} else {}
+		}
+	});
+	
+	window.Overlay = Backbone.View.extend({
+		el: $('#overlay'),
+		
+		initialize: function() {
+		}
+	});
+	
 	window.AppView = Backbone.View.extend({
 		el: $('#app'),
 		
@@ -188,20 +272,23 @@ $(function() {
 			router.bind("route:list", this.swapToList);
 			router.bind("route:map",  this.swapToMap);
 			
-			var mapLink = $("<a>Map</a>");
-			mapLink.click(function() {
-				router.navigate("map", true);
-			});
+// 			var mapLink = $("<a>Map</a>");
+// 			mapLink.click(function() {
+// 				router.navigate("map", true);
+// 			});
 
-			var listLink = $("<a>List</a>");
+			var listLink = $("<a>Clues</a>");
 			listLink.click(function() {
 				router.navigate("list", true);
 			});
 
-			$('#nav').append(mapLink);
+			//$('#nav').append(mapLink);
 			$('#nav').append(listLink);
 			
-			var clues = new CluePage;
+			this.clues = new CluePage;
+			this.map = new MapPage;
+			
+			Backbone.history.start();
 		},
 		
 		swapToList: function() {
@@ -212,6 +299,14 @@ $(function() {
 		
 		swapToMap: function() {
 			console.log("swapToMap");
+			
+			if(arguments.length === 1 && Clues.get(arguments[0])) {
+				this.map.model = Clues.get(arguments[0]);
+				this.map.render();
+			} else {
+				this.map.model = null;
+			}
+			
 			$('#clues').hide();
 			$('#map').show();
 		}
