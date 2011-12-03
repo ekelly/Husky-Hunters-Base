@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+   	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+		
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script src="/js/underscore-min.js"></script>
+		<script src="/js/backbone-min.js"></script>
+		<script src="/js/backbone.localStorage.js"></script>
+		
+		<link rel="stylesheet" href="/css/reset.css" />
+		<link rel="stylesheet" href="/css/style.css" />
+		
+		<title></title>
+	</head>
+	
+	<body>
+	
+	<div id="content">
+		<div id="header">
+			<h1>"Team Name" Clues</h1>
+			
+			<ul id="nav">
+				<li><a href="">Map</a></li>
+				<li><a href="">List</a></li>
+			</ul>
+		</div>
+		
+		
+		
+		<table id="clues">
+			<thead>
+				<tr>
+					<th></th>
+					<th>#</th>
+					<th>Clue</th>
+					<th>Solution</th>
+					<th>Points</th>
+					<th>Location</th>
+					<th>Photos</th>
+					<th></th>
+				</tr>
+				
+			</thead>
+			<tbody>
+				<tr id="add-clue">
+					<td></td>
+					<td><input type="text" id="clue-id" class="clue-input number" placeholder="###" /></td>
+					<td><input type="text" id="clue-hint" class="clue-input hint" placeholder="New clue" /></td>
+					<td><input type="text" id="clue-answer" class="clue-input answer" placeholder="New solution" /></td>
+					<td><input type="text" id="clue-points" class="clue-input points" placeholder="###" /></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<script type="text/template" id="clue-template">
+		<td class="edit"><a>&#x270E;</a></td>
+		
+		<td class="number">
+			<span class="display"><%= number %></span>
+			<input class="editing" type="text" value="<%= number %>" />
+		</td>
+		<td class="hint">
+			<span class="display"><%= hint %></span>
+			<input class="editing" type="text" value="<%= hint %>" />
+		</td>
+		<td class="answer">
+			<span class="display"><%= answer %></span>
+			<input class="editing" type="text" value="<%= answer %>" />
+		</td>
+		<td class="points">
+			<span class="display"><%= points %></span>
+			<input class="editing" type="text" value="<%= points %>" />
+		</td>
+		<td class="location"><a href="#map">Add to map</a></td>
+		<td class="photos"><span class="none">None</span></td>
+		
+		<td class="delete"><a></a></td>
+	</script>
+	<script src="/js/clues.js"></script>
+
+	</body>
+</html>
