@@ -113,9 +113,9 @@ class TeamsHandler(BaseHandler):
     self.db.close()
 
 application = tornado.web.Application([
-    (r"/teams/", TeamsHandler),
-    (r"/teams/([^/]+)/", TeamHandler),
-    (r"/teams/([^/]+)/clues/", CluesHandler),
-    (r"/teams/([^/]+)/clues/([^/]+)/", ClueHandler),
-    (r"/teams/([^/]+)/clues/([^/]+)/photos/", PhotosHandler),
+    (r"/teams/?", TeamsHandler),
+    (r"/teams/([^/]+)/?", TeamHandler),
+    (r"/teams/([^/]+)/clues/?", CluesHandler),
+    (r"/teams/([^/]+)/clues/([^/]+)/?", ClueHandler),
+    (r"/teams/([^/]+)/clues/([^/]+)/photos/?", PhotosHandler),
 ])
