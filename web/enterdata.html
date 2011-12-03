@@ -38,7 +38,6 @@
 					<th>Solution</th>
 					<th>Points</th>
 					<th>Location</th>
-					<th>Photos</th>
 					<th></th>
 				</tr>
 				
@@ -50,7 +49,6 @@
 					<td><input type="text" id="clue-hint" class="clue-input hint" placeholder="New clue" /></td>
 					<td><input type="text" id="clue-answer" class="clue-input answer" placeholder="New solution" /></td>
 					<td><input type="text" id="clue-points" class="clue-input points" placeholder="###" /></td>
-					<td></td>
 					<td></td>
 					<td></td>
 				</tr>
@@ -85,10 +83,9 @@
 		</td>
 		<td class="location">
 			<a href="#map/<%= number %>">
-			<% if (latlng.length===2) { %> See on map <% } else { %> Add to map <% } %>
+			<% if (latlng.length===2) { %> See on map <% } else { %> + Add to map <% } %>
 			</a>
 		</td>
-		<td class="photos"><span class="none">None</span></td>
 		
 		<td class="delete"><a></a></td>
 	</script>

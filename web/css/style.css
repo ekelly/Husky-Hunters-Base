@@ -128,12 +128,14 @@ body, input {
 			font-weight: bold;
 		}
 		#clues tr .hint, #clues tr .answer {
-			width: 280px;
+			width: 300px;
 		}
 		#clues tr .points {
 			width: 50px;
 		}
-
+		#clues tr .location a {
+			color: #999;
+		}
 			#clues .clue .location, #clues .clue .photos {
 				font-size: 12px;
 			}
