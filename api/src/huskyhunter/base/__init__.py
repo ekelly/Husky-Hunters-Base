@@ -98,6 +98,13 @@ class PhotosHandler(BaseHandler):
                            self.db.iter("select * from clues where team = %s and clue_number = %s", team, clue)]))
     self.db.close()    
 
+class TeamHandler(BaseHandler):
+  @valid_team
+  def get(self, team):
+    team = self.db.get("select * from teams where id = %s", team)
+    self.writeJsonp(json.dumps({"name": team.name, "id": team.id}))
+    self.db.close()
+
 class TeamsHandler(BaseHandler):
   def post(self):
     name = self.get_argument("name")
@@ -108,6 +115,7 @@ class TeamsHandler(BaseHandler):
 
 application = tornado.web.Application([
     (r"/teams/", TeamsHandler),
+    (r"/teams/([^/]+)/", TeamHandler),
     (r"/teams/([^/]+)/clues/", CluesHandler),
     (r"/teams/([^/]+)/clues/([^/]+)/", ClueHandler),
     (r"/teams/([^/]+)/clues/([^/]+)/photos/", PhotosHandler),
