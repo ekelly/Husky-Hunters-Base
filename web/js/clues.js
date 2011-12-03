@@ -156,7 +156,7 @@ $(function() {
 			var cluePoints   = this.inputPoints.val();
 			
 			Clues.create({
-				id: clueNumber,
+				//id: clueNumber,
 				number: clueNumber,
 				hint: clueHint,
 				answer: clueAnswer,
