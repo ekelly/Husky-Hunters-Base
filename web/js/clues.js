@@ -26,7 +26,7 @@ $(function() {
 	window.ClueList = Backbone.Collection.extend({
 		model: Clue,
 		
-		url: "/teams/"+readCookie('teamCode')+"/clues",
+		url: "/api/teams/"+readCookie('teamCode')+"/clues",
 		//localStorage: new Store("clues"),
 		
 		comparator: function(clue) {
@@ -324,9 +324,9 @@ $(function() {
 		var ca = document.cookie.split(';');
 		for(var i=0;i < ca.length;i++) {
 			var c = ca[i];
-			while (c.charAt(0)==' ') c = c.substring(1,c.length);
+			while (c.charAt(0)==' ') c = urlDecode(c.substring(1,c.length));
 			if (c.indexOf(nameEQ) == 0) {
-				return c.substring(nameEQ.length,c.length);
+				return urlDecode(c.substring(nameEQ.length,c.length));
 			}
 		}
 		return null;
