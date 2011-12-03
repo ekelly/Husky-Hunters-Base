@@ -324,9 +324,9 @@ $(function() {
 		var ca = document.cookie.split(';');
 		for(var i=0;i < ca.length;i++) {
 			var c = ca[i];
-			while (c.charAt(0)==' ') c = urlDecode(c.substring(1,c.length));
+			while (c.charAt(0)==' ') c = decodeURIComponent(c.substring(1,c.length));
 			if (c.indexOf(nameEQ) == 0) {
-				return urlDecode(c.substring(nameEQ.length,c.length));
+				return decodeURIComponent(c.substring(nameEQ.length,c.length));
 			}
 		}
 		return null;
