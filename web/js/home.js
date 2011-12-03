@@ -1,35 +1,40 @@
 $(function() {
+	function setCookie(c_name,c_value,c_expiredays) {
+		var exdate = new Date();
+		exdate.setDate(exdate.getDate() + c_expiredays);
+		document.cookie = c_name+ "=" +escape(c_value)+
+		((c_expiredays==null) ? "" : ";expires="+exdate.toGMTString());
+	}
+
 	$('#teamname').keypress(function(e) {
 		if(e.keyCode != 13) return;
-		
-		//console.log("return on team name", $('#teamname').val());
 		
 		var url = "http://hillcrest.roderic.us/api/teams/";
 		
 		$.post(url, { name: $('#teamname').val() }, function(data, textStatus, jqXHR) {
 			console.log(data, textStatus, jqXHR);
+			
+			setCookie("teamCode", data.id);
+			setCookie("teamName", data.name);
+			
+			if(data) {
+				window.location.href = "";
+			}
 		});
-
-		//var result = { name: $('#teamname').val(), id: "fe3dc0" };
-		
-// 		if(result.id) {
-// 			window.location.href = "/enterdata.html";
-// 		}
 	});
 	
 	$('#code').keypress(function(e) {
 		if(e.keyCode != 13) return;
 		
-		var url = "http://hillcrest.roderic.us/api/teams/" + $('#code').val() + "/clues/";
+		var url = "http://hillcrest.roderic.us/api/teams/" + $('#code').val() + "/";
 		
 		$.getJSON(url, function(data) {
-			console.log(data);
-		});
+			if(data) {
+				setCookie("teamCode", data.id);
+				setCookie("teamName", data.name);
 
-// 		var result = { name: $('#teamname').val(), id: "fe3dc0" };
-// 		
-// 		if(result.id) {
-// 			window.location.href = "/enterdata.html";
-// 		}
+				window.location.href = "/clues";
+			}
+		});
 	});
 });

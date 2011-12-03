@@ -3,7 +3,6 @@ $(function() {
 		routes: {
 			"":     "list",
 			"list": "list",
-			//"map":  "map",
 			"map/:clue": "map"
 		},
 		list: function(){},
@@ -284,7 +283,9 @@ $(function() {
 			listLink.click(function() {
 				router.navigate("list", true);
 			});
-
+			
+			$('h1').text(teamName + " Clues");
+			
 			$('#nav').append(listLink);
 			
 			this.clues = new CluePage;
@@ -318,9 +319,20 @@ $(function() {
 		}
 	});
 	
-	
-	var teamname = (window.location.pathname).split("/");
-	window.TeamName = window.location.pathname;
+	function readCookie(name) {
+		var nameEQ = name + "=";
+		var ca = document.cookie.split(';');
+		for(var i=0;i < ca.length;i++) {
+			var c = ca[i];
+			while (c.charAt(0)==' ') c = c.substring(1,c.length);
+			if (c.indexOf(nameEQ) == 0) {
+				return c.substring(nameEQ.length,c.length);
+			}
+		}
+		return null;
+	}
+	window.teamName = readCookie("teamName");
+	window.teamCode = readCookie("teamCode");
 	
 	window.App = new AppView;
 
