@@ -50,14 +50,12 @@ class BaseHandler(tornado.web.RequestHandler):
 
 class CluesHandler(BaseHandler):
   @valid_team
-  @tornado.web.addslash
   def get(self, team):
     self.writeJsonp(json.dumps([decode_clue(row.body) for row in
                            self.db.iter("select * from clues where team = %s", team)]))
     self.db.close()
 
   @valid_team
-  @tornado.web.addslash
   def post(self, team):
     clue = json.loads(self.request.body)
     self.db.execute("insert into clues (team, clue_number, body) values (%s, %s, %s)",
@@ -67,7 +65,6 @@ class CluesHandler(BaseHandler):
 class ClueHandler(BaseHandler):
   @valid_team
   @existing_clue
-  @tornado.web.addslash
   def get(self, team, clue_number):
     self.writeJsonp(decode_clue(self.db.get("select * from clues where team = %s and clue_number = %s ",
                                        team, clue_number).body))
@@ -75,7 +72,6 @@ class ClueHandler(BaseHandler):
 
   @valid_team
   @existing_clue
-  @tornado.web.addslash
   def put(self, team, clue_number):
     if self.request.headers.get("Expect", "") == "100-continue":
       self.set_header("Accept", "text/plain, application/json")
@@ -89,7 +85,6 @@ class ClueHandler(BaseHandler):
 
   @valid_team
   @existing_clue
-  @tornado.web.addslash
   def delete(self, team, clue_number):
     self.db.execute("delete from clues where team = %s and clue_number = %s", team, clue_number)
     self.db.close()
@@ -97,7 +92,6 @@ class ClueHandler(BaseHandler):
 class PhotosHandler(BaseHandler):
   @valid_team
   @existing_clue
-  @tornado.web.addslash
   def get(self, team, clue):
     self.writeJsonp(json.dumps([decode_clue(row.body)["photos"] for row in
                            self.db.iter("select * from clues where team = %s and clue_number = %s", team, clue)]))
@@ -105,14 +99,12 @@ class PhotosHandler(BaseHandler):
 
 class TeamHandler(BaseHandler):
   @valid_team
-  @tornado.web.addslash
   def get(self, team):
     team = self.db.get("select * from teams where id = %s", team)
     self.writeJsonp(json.dumps({"name": team.name, "id": team.id}))
     self.db.close()
 
 class TeamsHandler(BaseHandler):
-  @tornado.web.addslash
   def post(self):
     name = self.get_argument("name")
     new_id = generate_id()
