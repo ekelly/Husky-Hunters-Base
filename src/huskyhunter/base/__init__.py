@@ -29,7 +29,7 @@ def existing_clue(fun):
     if not self.db.execute_rowcount("select * from clues where team = %s and clue_number = %s",
                                     team, clue) > 0:
       raise tornado.web.HTTPError(404)
-    fun(team, clue, *args, **kwargs)
+    fun(self, team, clue, *args, **kwargs)
   return wrapped
 
 class BaseHandler(tornado.web.RequestHandler):
