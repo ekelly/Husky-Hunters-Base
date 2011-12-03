@@ -4,26 +4,32 @@ $(function() {
 		
 		//console.log("return on team name", $('#teamname').val());
 		
-// 		var url = "http://roderic.us/teams/";
-// 		
-// 		$.post(url, { name: $('#teamname').val() }, function(data, textStatus, jqXHR) {
-// 			console.log(data, textStatus, jqXHR);
-// 		});
-
-		var result = { name: $('#teamname').val(), id: "fe3dc0" };
+		var url = "http://huskyhunt.roderic.us/api/teams/";
 		
-		if(result.id) {
-			window.location.href = "/enterdata.html";
-		}
+		$.post(url, { name: $('#teamname').val() }, function(data, textStatus, jqXHR) {
+			console.log(data, textStatus, jqXHR);
+		});
+
+		//var result = { name: $('#teamname').val(), id: "fe3dc0" };
+		
+// 		if(result.id) {
+// 			window.location.href = "/enterdata.html";
+// 		}
 	});
 	
 	$('#code').keypress(function(e) {
 		if(e.keyCode != 13) return;
 		
-		var result = { name: $('#teamname').val(), id: "fe3dc0" };
+		var url = "http://huskyhunt.roderic.us/api/teams/" + $('#code').val() + "/clues/";
 		
-		if(result.id) {
-			window.location.href = "/enterdata.html";
-		}
+		$.getJSON(url, function(data) {
+			console.log(data);
+		});
+
+// 		var result = { name: $('#teamname').val(), id: "fe3dc0" };
+// 		
+// 		if(result.id) {
+// 			window.location.href = "/enterdata.html";
+// 		}
 	});
 });

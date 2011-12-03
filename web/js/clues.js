@@ -290,7 +290,7 @@ $(function() {
 			this.clues = new CluePage;
 			this.map = new MapPage;
 			
-			Backbone.history.start();
+			Backbone.history.start({ root: "/" });
 		},
 		
 		swapToList: function() {
@@ -317,6 +317,10 @@ $(function() {
 			}
 		}
 	});
+	
+	
+	var teamname = (window.location.pathname).split("/");
+	window.TeamName = window.location.pathname;
 	
 	window.App = new AppView;
 
