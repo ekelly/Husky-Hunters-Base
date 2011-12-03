@@ -12,13 +12,11 @@ $(function() {
 		var url = "http://hillcrest.roderic.us/api/teams/";
 		
 		$.post(url, { name: $('#teamname').val() }, function(data, textStatus, jqXHR) {
-			console.log(data, textStatus, jqXHR);
-			
-			setCookie("teamCode", data.id);
-			setCookie("teamName", data.name);
-			
 			if(data) {
-				window.location.href = "";
+				setCookie("teamCode", data.id);
+				setCookie("teamName", data.name);
+				
+				window.location.href = "/clues";
 			}
 		});
 	});
@@ -32,7 +30,7 @@ $(function() {
 			if(data) {
 				setCookie("teamCode", data.id);
 				setCookie("teamName", data.name);
-
+				
 				window.location.href = "/clues";
 			}
 		});

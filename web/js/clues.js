@@ -26,7 +26,8 @@ $(function() {
 	window.ClueList = Backbone.Collection.extend({
 		model: Clue,
 		
-		localStorage: new Store("clues"),
+		url: "/teams/"+readCookie('teamCode')+"/clues",
+		//localStorage: new Store("clues"),
 		
 		comparator: function(clue) {
 			// comparator function return an absolute ordering
@@ -285,6 +286,7 @@ $(function() {
 			$('h1').text(teamName + " Clues");
 			
 			$('#nav').append(listLink);
+			$('#nav').append("<div id='teamCode'>Team code: <input type='text' value='"+readCookie('teamCode')+"' /></div>");
 			
 			this.clues = new CluePage;
 			this.map = new MapPage;
