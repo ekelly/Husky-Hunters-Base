@@ -187,15 +187,13 @@ $(function() {
 		initialize: function() {
 			_.bindAll(this, 'search', 'showSearchResults');
 			
-			this.input = $("<input type='text' id='map-search' placeholder='Search for a location' />");
-			
-			this.mapEl = $("<div id='map-canvas'></div>");
-			
-			$(this.el).append(this.input);
-			$(this.el).append(this.mapEl);
+			this.template = _.template($('#map-template').text());
 		},
 		
 		render: function() {
+			console.log(this.model.toJSON());
+			$(this.el).html(this.template(this.model.toJSON()));
+			
 			var latlng = new google.maps.LatLng(42.3400571, -71.0875355);
 			var notDefault = false;
 			
@@ -214,7 +212,7 @@ $(function() {
 			};
 			
 			if(!this.map) {
-				this.map = new google.maps.Map(this.mapEl[0], options);
+				this.map = new google.maps.Map($('#map-canvas')[0], options);
 			} else {
 				this.map.setCenter(latlng);
 			}
@@ -234,7 +232,7 @@ $(function() {
 			if(e.keyCode != 13) return;
 			
 			
-			var address = this.input.val();
+			var address = $("#map-search").val();
 			
 			var geocoder = new google.maps.Geocoder();
 			

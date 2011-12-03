@@ -87,7 +87,21 @@
 		
 		<td class="delete"><a></a></td>
 	</script>
+	
+	<script type="text/template" id="map-template">
+		<div id="clue-detail">
+			<div class="number"><b><%= number %></b></div>
+			<div class="hint"><%= hint %></div>
+			<div class="answer"><%= answer %></div>
+			<div class="points"><%= points %></div>
+			<div class="location"><% if (latlng.length===2) { %> Has location <% } else { %> No location <% } %></div>
 
+		</div>
+		
+		<input type="text" id="map-search" placeholder="Search for a location" />
+		
+		<div id="map-canvas"></div>
+	</script>
 
 	<script type="text/javascript"	
 	src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCxJVf7hEuR6AB0O52ugqk5dE9A5nFmuYA&sensor=true"></script>

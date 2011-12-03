@@ -15,6 +15,10 @@ body, input {
 	font: 16px/1.5 Arial, sans-serif;
 }
 
+b, em {
+	font-weight: bold;
+}
+
 #content {
 	width: 960px;
 	margin: auto;
@@ -163,6 +167,24 @@ body, input {
 #map-canvas {
 	width: 960px;
 	height: 500px;
+}
+#clue-detail {
+	background: #fff;
+}
+	#clue-detail div {
+		display: inline-block;
+		padding: 20px;
+	}
+	#clue-detail .hint, #clue-detail .answer {
+		width: 300px;
+	}
+#map-search {
+	width: 940px;
+	border: 1px solid #eee;
+	padding: 10px;
+	margin: 20px 0;
+
+	font-size: 24px;
 }
 
 #overlay {
