@@ -4,7 +4,7 @@ $(function() {
 		
 		//console.log("return on team name", $('#teamname').val());
 		
-		var url = "http://huskyhunt.roderic.us/api/teams/";
+		var url = "http://hillcrest.roderic.us/api/teams/";
 		
 		$.post(url, { name: $('#teamname').val() }, function(data, textStatus, jqXHR) {
 			console.log(data, textStatus, jqXHR);
@@ -20,7 +20,7 @@ $(function() {
 	$('#code').keypress(function(e) {
 		if(e.keyCode != 13) return;
 		
-		var url = "http://huskyhunt.roderic.us/api/teams/" + $('#code').val() + "/clues/";
+		var url = "http://hillcrest.roderic.us/api/teams/" + $('#code').val() + "/clues/";
 		
 		$.getJSON(url, function(data) {
 			console.log(data);
