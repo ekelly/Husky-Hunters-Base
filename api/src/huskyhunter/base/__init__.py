@@ -25,7 +25,7 @@ def valid_team(fun):
   @functools.wraps(fun)
   def wrapped(self, team, *args, **kwargs):
     if not self.db.execute_rowcount("select * from teams where id = %s", team) > 0:
-      raise tornado.web.HTTPError(403)
+      raise tornado.web.HTTPError(404)
     fun(self, team, *args, **kwargs)
   return wrapped
 
