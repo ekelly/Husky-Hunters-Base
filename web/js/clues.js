@@ -40,8 +40,8 @@ $(function() {
 	window.ClueList = Backbone.Collection.extend({
 		model: Clue,
 		
-		url: "/api/teams/"+readCookie('teamCode')+"/clues",
-		//localStorage: new Store("clues"),
+		//url: "/api/teams/"+readCookie('teamCode')+"/clues",
+		localStorage: new Store("clues"),
 		
 		comparator: function(clue) {
 			// comparator function return an absolute ordering
