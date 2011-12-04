@@ -9,7 +9,7 @@ $(function() {
 	$('#teamname').keypress(function(e) {
 		if(e.keyCode != 13) return;
 		
-		var url = "http://hillcrest.roderic.us/api/teams/";
+		var url = "http://huskyhunter.roderic.us/api/teams/";
 		
 		$.post(url, { name: $('#teamname').val() }, function(data, textStatus, jqXHR) {
 			console.log(data);			
@@ -27,7 +27,7 @@ $(function() {
 	$('#code').keypress(function(e) {
 		if(e.keyCode != 13) return;
 		
-		var url = "http://hillcrest.roderic.us/api/teams/" + $('#code').val() + "/";
+		var url = "http://huskyhunter.roderic.us/api/teams/" + $('#code').val() + "/";
 		
 		$.getJSON(url, function(data) {
 			if(data) {
