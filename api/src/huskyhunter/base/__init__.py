@@ -61,6 +61,8 @@ class CluesHandler(BaseHandler):
     self.db.execute("insert into clues (team, clue_number, body) values (%s, %s, %s)",
                     team, clue["clue_number"], encode_clue(clue))
     self.db.close()
+    clue["id"] = clue["clue_number"]
+    self.writeJsonp(json.dumps(clue))
 
 class ClueHandler(BaseHandler):
   @valid_team
@@ -95,7 +97,7 @@ class PhotosHandler(BaseHandler):
   def get(self, team, clue):
     self.writeJsonp(json.dumps([decode_clue(row.body)["photos"] for row in
                            self.db.iter("select * from clues where team = %s and clue_number = %s", team, clue)]))
-    self.db.close()    
+    self.db.close()
 
 class TeamHandler(BaseHandler):
   @valid_team
