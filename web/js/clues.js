@@ -34,7 +34,11 @@ $(function() {
 			if(Clues.get(attrs.id)) {
 				return "Model not unique";
 			}
-		}
+		},
+
+    isNew: function () {
+      return false;
+    }
 	});
 	
 	window.ClueList = Backbone.Collection.extend({

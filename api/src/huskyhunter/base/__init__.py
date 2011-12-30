@@ -3,6 +3,7 @@ import tornado.database
 import functools
 import json
 import uuid
+import clues
 
 # (clue_number, answer, original_text, points, location, is_solved, photos)
 
@@ -10,12 +11,6 @@ import uuid
 
 def jsonp(name, body):
   return "%s(%s)" % (name, body)
-
-def decode_clue(clue_bytes):
-  return json.loads(clue_bytes)
-
-def encode_clue(clue):
-  return json.dumps(clue)
 
 def generate_id():
   base_id = uuid.uuid4()
@@ -32,8 +27,7 @@ def valid_team(fun):
 def existing_clue(fun):
   @functools.wraps(fun)
   def wrapped(self, team, clue, *args, **kwargs):
-    if not self.db.execute_rowcount("select * from clues where team = %s and clue_number = %s",
-                                    team, clue) > 0:
+    if clues.get(self.db, team, clue) is None:
       raise tornado.web.HTTPError(404)
     fun(self, team, clue, *args, **kwargs)
   return wrapped
@@ -51,52 +45,44 @@ class BaseHandler(tornado.web.RequestHandler):
 class CluesHandler(BaseHandler):
   @valid_team
   def get(self, team):
-    self.writeJsonp(json.dumps([decode_clue(row.body) for row in
-                           self.db.iter("select * from clues where team = %s", team)]))
+    self.writeJsonp(json.dumps(clues.get_all(self.db, team)))
     self.db.close()
-
-  @valid_team
-  def post(self, team):
-    clue = json.loads(self.request.body)
-    self.db.execute("insert into clues (team, clue_number, body) values (%s, %s, %s)",
-                    team, clue["clue_number"], encode_clue(clue))
-    self.db.close()
-    clue["id"] = clue["clue_number"]
-    self.writeJsonp(json.dumps(clue))
 
 class ClueHandler(BaseHandler):
   @valid_team
   @existing_clue
   def get(self, team, clue_number):
-    self.writeJsonp(decode_clue(self.db.get("select * from clues where team = %s and clue_number = %s ",
-                                       team, clue_number).body))
+    self.writeJsonp(clues.get_json(self.db, team, clue_number))
     self.db.close()
 
   @valid_team
-  @existing_clue
   def put(self, team, clue_number):
     if self.request.headers.get("Expect", "") == "100-continue":
       self.set_header("Accept", "text/plain, application/json")
       self.set_status(100)
       return
-    clue = json.loads(self.request.body)
-    self.db.execute("update clues set body = %s where team = %s and clue_number = %s",
-                    encode_clue(clue), team, clue_number)
+
+    clue = clues.decode(self.request.body)
+
+    if clues.get(self.db, team, clue_number) is None:
+      clues.create(self.db, team, clue_number, clue)
+    else:
+      clue = clues.update(self.db, team, clue_number, clue)
+
     self.db.close()
-    self.writeJsonp(self.request.body)
+    self.writeJsonp(json.dumps(clue))
 
   @valid_team
   @existing_clue
   def delete(self, team, clue_number):
-    self.db.execute("delete from clues where team = %s and clue_number = %s", team, clue_number)
+    clues.delete(self.db, team, clue_number)
     self.db.close()
 
 class PhotosHandler(BaseHandler):
   @valid_team
   @existing_clue
   def get(self, team, clue):
-    self.writeJsonp(json.dumps([decode_clue(row.body)["photos"] for row in
-                           self.db.iter("select * from clues where team = %s and clue_number = %s", team, clue)]))
+    self.writeJsonp(json.dumps(clues.get(self.db, team, clue)["photos"]))
     self.db.close()
 
 class TeamHandler(BaseHandler):
